@@ -7,9 +7,11 @@ import os
 import gradio as gr
 from brain_of_doc import encode_image, analyze_image_with_query
 from voice_of_patient import record_audio, transcribe_with_groq
-from voice_of_doc import text_to_speech_with_gtts, text_to_speech_with_elevenlabs
+from voice_of_doc import text_to_speech_with_gtts
 import shutil
 from flask import Flask
+from fastapi import FastAPI
+from gradio.routes import mount_gradio_app
 
 # Add Flask app for health check
 app = Flask(__name__)
@@ -77,17 +79,19 @@ iface = gr.Interface(
     title="AI Doctor with Vision and Voice"
 )
 
-# Update launch parameters for Railway
+# Mount your Gradio interface
+app = mount_gradio_app(app, iface, path="/")
+
 if __name__ == "__main__":
-    try:
-        iface.launch(
-            server_name="0.0.0.0",
-            server_port=int(os.getenv("PORT", 7860)),
-            share=False,
-            debug=True
-        )
-    except Exception as e:
-        print(f"Error starting server: {e}")
-        raise
+    import uvicorn
+    port = int(os.getenv("PORT", 7860))
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=port,
+        log_level="info",
+        timeout_keep_alive=60,
+        access_log=True
+    )
 
 #http://127.0.0.1:7860

@@ -1,6 +1,12 @@
 #step 1:Setup Audio recoder 
 import logging
-import speech_recognition as sr
+try:
+    import speech_recognition as sr
+except ImportError:
+    print("Installing speech_recognition...")
+    import subprocess
+    subprocess.check_call(["pip", "install", "SpeechRecognition"])
+    import speech_recognition as sr
 from pydub import AudioSegment
 from io import BytesIO
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
