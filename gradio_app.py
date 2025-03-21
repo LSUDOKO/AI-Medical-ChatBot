@@ -9,8 +9,14 @@ from brain_of_doc import encode_image, analyze_image_with_query
 from voice_of_patient import record_audio, transcribe_with_groq
 from voice_of_doc import text_to_speech_with_gtts, text_to_speech_with_elevenlabs
 import shutil
+from flask import Flask
 
-load_dotenv()
+# Add Flask app for health check
+app = Flask(__name__)
+
+@app.route('/health')
+def health_check():
+    return {'status': 'healthy'}, 200
 
 system_prompt="""You have to act as a professional doctor, i know you are not but this is for learning purpose. 
             What's in this image?. Do you find anything wrong with it medically? 
@@ -71,10 +77,17 @@ iface = gr.Interface(
     title="AI Doctor with Vision and Voice"
 )
 
-iface.launch(
-    server_name="0.0.0.0",
-    server_port=int(os.getenv("PORT", 7863)),
-    share=False
-)
+# Update launch parameters for Railway
+if __name__ == "__main__":
+    try:
+        iface.launch(
+            server_name="0.0.0.0",
+            server_port=int(os.getenv("PORT", 7860)),
+            share=False,
+            debug=True
+        )
+    except Exception as e:
+        print(f"Error starting server: {e}")
+        raise
 
 #http://127.0.0.1:7860

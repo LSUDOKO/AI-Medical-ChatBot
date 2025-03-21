@@ -5,20 +5,10 @@ python-dotenv==1.0.0
 elevenlabs==0.2.27
 gTTS==2.4.0
 requests==2.31.0
-
+flask
 # Image processing
 Pillow==10.1.0
 numpy==1.26.1
 
 # Audio processing
 pydub==0.25.1
-
-# Deployment
-gunicorn==21.2.0
-uvicorn==0.24.0
-fastapi==0.104.1
-
-# Testing & development
-pytest==7.4.3
-'''black==23.10.1
-flake8==6.1.0'''
