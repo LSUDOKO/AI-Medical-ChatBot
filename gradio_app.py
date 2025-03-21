@@ -71,6 +71,10 @@ iface = gr.Interface(
     title="AI Doctor with Vision and Voice"
 )
 
-iface.launch(debug=True, server_name="0.0.0.0")
+iface.launch(
+    server_name="0.0.0.0",
+    server_port=int(os.getenv("PORT", 7863)),
+    share=False
+)
 
 #http://127.0.0.1:7860

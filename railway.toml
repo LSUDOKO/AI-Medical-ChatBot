@@ -1,0 +1,12 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+startCommand = "python gradio_app.py"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+
+[variables]
+PYTHON_VERSION = "3.10"
+PORT = "7860"
