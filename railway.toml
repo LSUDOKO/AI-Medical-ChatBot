@@ -10,8 +10,6 @@ pip install -r requirements.txt
 startCommand = "python gradio_app.py"
 healthcheckPath = "/"
 healthcheckTimeout = 300
-restartPolicyType = "on-failure"
-restartPolicyMaxRetries = 3
 
 [variables]
 PYTHON_VERSION = "3.10"
