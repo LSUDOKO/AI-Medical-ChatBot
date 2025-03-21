@@ -9,16 +9,8 @@ from brain_of_doc import encode_image, analyze_image_with_query
 from voice_of_patient import record_audio, transcribe_with_groq
 from voice_of_doc import text_to_speech_with_gtts
 import shutil
-from flask import Flask
-from fastapi import FastAPI
-from gradio.routes import mount_gradio_app
 
-# Add Flask app for health check
-app = Flask(__name__)
 
-@app.route('/health')
-def health_check():
-    return {'status': 'healthy'}, 200
 
 system_prompt="""You have to act as a professional doctor, i know you are not but this is for learning purpose. 
             What's in this image?. Do you find anything wrong with it medically? 
@@ -79,19 +71,24 @@ iface = gr.Interface(
     title="AI Doctor with Vision and Voice"
 )
 
-# Mount your Gradio interface
-app = mount_gradio_app(app, iface, path="/")
-
+# Modified launch parameters
 if __name__ == "__main__":
-    import uvicorn
-    port = int(os.getenv("PORT", 7860))
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=port,
-        log_level="info",
-        timeout_keep_alive=60,
-        access_log=True
-    )
+    try:
+        # Try different ports if one is busy
+        for port in range(7860, 7870):  # Will try ports 7860 to 7869
+            try:
+                iface.launch(
+                    server_name="0.0.0.0",
+                    server_port=port,
+                    share=False,
+                    debug=False
+                )
+                print(f"Server started successfully on port {port}")
+                break
+            except OSError:
+                continue
+    except Exception as e:
+        print(f"Error starting server: {e}")
+        raise
 
 #http://127.0.0.1:7860

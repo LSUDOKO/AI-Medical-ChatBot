@@ -2,17 +2,15 @@
 builder = "nixpacks"
 buildCommand = """
 apt-get update && \
-apt-get install -y portaudio19-dev python3-pyaudio && \
-pip install -r requirements.txt
+apt-get install -y build-essential portaudio19-dev python3-pyaudio && \
+pip install --no-cache-dir -r requirements.txt
 """
 
 [deploy]
 startCommand = "python gradio_app.py"
 healthcheckPath = "/"
 healthcheckTimeout = 300
-restartPolicyType = "on-failure"
-restartPolicyMaxRetries = 3
 
 [variables]
 PYTHON_VERSION = "3.10"
-PORT = "7863"
+PORT = "7860"
