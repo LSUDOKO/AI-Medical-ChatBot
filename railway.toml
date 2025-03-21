@@ -15,4 +15,4 @@ restartPolicyMaxRetries = 3
 
 [variables]
 PYTHON_VERSION = "3.10"
-PORT = "7863"
+PORT = "7860"
